@@ -62,7 +62,7 @@ public class NumeralSystems {
 	 * @return z im Hexadezimalsystem
 	 * @throws Exception Wenn es keine Binärzahl ist.
 	 */
-	public static String binToHex (long z) throws Exception {
+	public static String binToHex (long z) throws InputMismatchException {
 		return dezToHex(binToDez(z));
 	}
 
@@ -72,12 +72,12 @@ public class NumeralSystems {
 	 * @return z im Dezimalsystem
 	 * @throws Exception Wenn die Zahl nicht binär ist.
 	 */
-	public static int binToDez (long z) throws Exception {
+	public static int binToDez (long z) throws InputMismatchException {
 		int result = 0;
 		int i = 0;
 		while(z != 0) {
 			if(z % 10 != 0 && z % 10 != 1) {
-				throw new Exception();
+				throw new InputMismatchException();
 			}
 			result += (z % 10) * (long)Math.pow(2, i);
 			i++;
@@ -115,8 +115,18 @@ public class NumeralSystems {
 				return 14;
 			case "F":
 				return 15;
+			case "1":
+			case "2":
+			case "3":
+			case "4":
+			case "5":
+			case "6":
+			case "7":
+			case "8":
+			case "9":
+				return Integer.parseInt(z);
 			default:
-				return Integer.getInteger(z);
+				throw new InputMismatchException();
 			}
 		} else {
 			StringBuilder zahl = new StringBuilder(z);
@@ -156,8 +166,9 @@ public class NumeralSystems {
 							switch (ausgang) {
 								case 2:
 									System.out.println("Bitte gib die umzuwandelnde Zahl ein.");
-									int binZahl = sc.nextInt();
+									int binZahl;
 									try {
+										binZahl = sc.nextInt();
 										System.out.println("~~~~~~~~~~~~~~~~~~~~RESULTAT~~~~~~~~~~~~~~~~~~~~");
 										if (ziel == 2) {
 											System.out.println("Die Binärzahl " + binZahl + " ist " + dezToBin(binToDez(binZahl)) + " im Binärsystem.");
@@ -167,7 +178,7 @@ public class NumeralSystems {
 											System.out.println("Die Binärzahl " + binZahl + " ist " + binToHex(binZahl) + " im Hexadezimalsystem.");
 										}
 										System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-										} catch (Exception g) {
+										} catch (InputMismatchException g) {
 											System.out.println("Das ist keine Binärzahl.\nProgramm wird beendet.");
 											menu = false;
 										}	
@@ -193,16 +204,21 @@ public class NumeralSystems {
 									break;
 								case 16:
 									System.out.println("Bitte gib die umzuwandelnde Zahl ein.");
-									String hexZahl = sc.next();
-									System.out.println("~~~~~~~~~~~~~~~~~~~~RESULTAT~~~~~~~~~~~~~~~~~~~~");
-									if (ziel == 2) {
-										System.out.println("Die Hexadezimalzahl " + hexZahl + " ist " + hexToBin(hexZahl) + " im Binärsystem.");
-									} else if (ziel == 10) {
-										System.out.println("Die Hexadezimalzahl " + hexZahl + " ist " + hexToDez(hexZahl) + " im Dezimalsystem.");
-									} else if (ziel == 16) {
-										System.out.println("Die Hexadezimalzahl " + hexZahl + " ist " + hexZahl + " im Hexadezimalsystem.");
-									} 
-									System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+										try {
+										String hexZahl = sc.next();
+										System.out.println("~~~~~~~~~~~~~~~~~~~~RESULTAT~~~~~~~~~~~~~~~~~~~~");
+										if (ziel == 2) {
+											System.out.println("Die Hexadezimalzahl " + hexZahl + " ist " + hexToBin(hexZahl) + " im Binärsystem.");
+										} else if (ziel == 10) {
+											System.out.println("Die Hexadezimalzahl " + hexZahl + " ist " + hexToDez(hexZahl) + " im Dezimalsystem.");
+										} else if (ziel == 16) {
+											System.out.println("Die Hexadezimalzahl " + hexZahl + " ist " + hexZahl + " im Hexadezimalsystem.");
+										} 
+										System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+									} catch (InputMismatchException q) {
+										System.out.println("Das ist keine Hexadezimalzahl.\tProgramm wird beendet.");
+										menu = false;
+									}
 									break;
 							}
 							break;
