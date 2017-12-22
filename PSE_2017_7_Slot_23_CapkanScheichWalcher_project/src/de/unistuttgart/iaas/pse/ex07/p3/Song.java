@@ -10,6 +10,11 @@ public class Song implements Comparable<Song> {
 	private String singer;
 	private String title;
 	private int year;
+	/** 
+	* @param singer the singer of the song
+	* @param title the title of the song
+	* @param year the year the song was published
+	*/
 	public Song(String s, String t, int y) {
 		this.singer = s;
 		this.title = t;
@@ -17,13 +22,26 @@ public class Song implements Comparable<Song> {
 	}
 	public String getSinger() {
 		return singer;
+	/**
+	* @param getSinger the getter-method to get the artist
+	*/
 	}
 	public String getTitle() {
 		return title;
+	/**
+	* @param getTitle the getter method to get the title of the song
+	*/
 	}
 	public int getYear() {
 		return year;
+	/**
+	* @param getYear the getter method to get the published year
+	*/
 	}
+	/**
+	* @param compareTo a method to compare a song with the one written down in the brackets
+	* it checks if its the same song or not
+	*/
 	@Override
 	public int compareTo(Song lied) {
 		if(this.singer.compareToIgnoreCase(lied.singer) != 0) {
