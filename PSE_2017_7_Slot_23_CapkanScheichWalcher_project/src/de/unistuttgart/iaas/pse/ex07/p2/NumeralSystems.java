@@ -1,16 +1,24 @@
 package de.unistuttgart.iaas.pse.ex07.p2;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
  * Provides methods for converting numbers between their binary, decimal, and
- * hexadecimal representation. Provides a simple text interface to these
- * conversion methods.
+ * hexadecimal representation. Provides a simple text interface to these conversion methods.
+ * @author Daniel Capkan, Matrikelnummer: 3325960, st156303@stud.uni-stuttgart.de
+ * @author Mario Scheich, Matrikelnummer: 3232655 , st151491@stud.uni-stuttgart.de
+ * @author Florian Walcher, Matrikelnummer: 3320185, st156818@stud.uni-stuttgart.de
  */
 public class NumeralSystems {
-	public static int dezToBin (int z) {
-		int result = 0;
-		int i = 0;
+	
+	/**
+	 * Wandelt eine Dezimalzahl in eine Binärzahl um.
+	 * @param z - die umzurechnende Dezimalzahl
+	 * @return z im Binärystem
+	 */
+	public static long dezToBin (long z) {
+		int result = 0, i = 0;
 		while (z != 0) {
 			result += Math.pow(10, i) * (z % 2);
 			z /= 2;
@@ -18,6 +26,12 @@ public class NumeralSystems {
 		}
 		return result;
 	}
+	
+	/**
+	 * Wandelt eine Dezimalzahl in eine Hexadezimalzahl um.
+	 * @param z - die umzurechnende Dezimalzahl
+	 * @return z im Hexadezimalsystem
+	 */
 	public static String dezToHex (int z) {
 		if(z < 16) {
 			switch (z) {
@@ -41,22 +55,46 @@ public class NumeralSystems {
 			return (dezToHex(z / 16)) + (dezToHex(z % 16));
 		}
 	}
-	public static String binToHex (int z) {
+
+	/**
+	 * Wandelt eine Binärzahl in eine Hexadezimalzahl um.
+	 * @param z - die umzurechnende Binärzahl
+	 * @return z im Hexadezimalsystem
+	 */
+	public static String binToHex (long z) {
 		return dezToHex(binToDez(z));
 	}
-	public static int binToDez (int z) {
+
+	/**
+	 * Wandelt eine Binärzahl in eine Dezimalzahl um.
+	 * @param z - die umzurechnende Binärzahl
+	 * @return z im Dezimalsystem
+	 */
+	public static int binToDez (long z) {
 		int result = 0;
 		int i = 0;
 		while(z != 0) {
-			result += (z % 10) * (int)Math.pow(2, i);
+			result += (z % 10) * (long)Math.pow(2, i);
 			i++;
 			z /= 10;
 		}
 		return result;
 	}
-	public static int hexToBin (String z) {
+
+	/**
+	 * Wandelt eine Hexadezimalzahl in eine Binärzahl um.
+	 * @param z - die umzurechnende Hexadezimalzahl
+	 * @return z im Binärsystem
+	 */
+	public static long hexToBin (String z) {
 		return dezToBin(hexToDez(z));
 	}
+
+	/**
+	 * Wandelt eine Hexadezimalzahl in eine Dezimalzahl um.
+	 * @param z - die umzurechnende Hexadezimalzahl
+	 * @return z im Dezimalsystem
+	 */
 	public static int hexToDez (String z) {
 		if (z.length() == 1) {
 			switch (z) {
@@ -87,69 +125,79 @@ public class NumeralSystems {
 		Scanner sc = new Scanner(System.in);
 		while (menu) {
 			System.out.println("Bitte gib die Basis des Ausgangszahlensystems an. Gib -1 ein um das Programm zu beenden.");
-			int ausgang = sc.nextInt();
+			int ausgang;
+			try {
+				ausgang = sc.nextInt();
+			} catch (InputMismatchException e) {
+				System.out.println("Dies ist keine Zahl.");
+				ausgang = -1;
+			}
 			switch (ausgang) {
 				case 2:
 				case 10:
 				case 16:
 					System.out.println("Bitte gib die Basis des Zielzahlensystems an. Gib -1 ein um das Programm zu beenden.");
+					int ziel = sc.nextInt();
+					switch (ziel) {
+						case 2:
+						case 10:
+						case 16:
+							switch (ausgang) {
+								case 2:
+									System.out.println("Bitte gib die zu umwandelnde Zahl ein.");
+									int binZahl = sc.nextInt();
+									System.out.println("~~~~~~~~~~~~~~~~~~~~RESULTAT~~~~~~~~~~~~~~~~~~~~");
+									if (ziel == 2) {
+										System.out.println("Die Binärzahl " + binZahl + " ist " + binZahl + " im Binärsystem.");
+									} else if (ziel == 10) {
+										System.out.println("Die Binärzahl " + binZahl + " ist " + binToDez(binZahl) + " im Dezimalsystem.");
+									} else if (ziel == 16) {
+										System.out.println("Die Binärzahl " + binZahl + " ist " + binToHex(binZahl) + " im Hexadezimalsystem.");
+									}
+									break;
+								case 10:
+									System.out.println("Bitte gib die zu umwandelnde Zahl ein.");
+									int dezZahl = sc.nextInt();
+									System.out.println("~~~~~~~~~~~~~~~~~~~~RESULTAT~~~~~~~~~~~~~~~~~~~~");
+									if (ziel == 2) {
+										System.out.println("Die Dezimalzahl " + dezZahl + " ist " + dezToBin(dezZahl) + " im Binärsystem.");
+									} else if (ziel == 10) {
+										System.out.println("Die Dezimalzahl " + dezZahl + " ist " + dezZahl + " im Dezimalsystem.");
+									} else if (ziel == 16) {
+										System.out.println("Die Dezimalzahl " + dezZahl + " ist " + dezToHex(dezZahl) + " im Hexadezimalsystem.");
+									}
+									break;
+								case 16:
+									System.out.println("Bitte gib die zu umwandelnde Zahl ein.");
+									String hexZahl = sc.next();
+									System.out.println("~~~~~~~~~~~~~~~~~~~~RESULTAT~~~~~~~~~~~~~~~~~~~~");
+									if (ziel == 2) {
+										System.out.println("Die Hexadezimalzahl " + hexZahl + " ist " + hexToBin(hexZahl) + " im Binärsystem.");
+									} else if (ziel == 10) {
+										System.out.println("Die Hexadezimalzahl " + hexZahl + " ist " + hexToDez(hexZahl) + " im Dezimalsystem.");
+									} else if (ziel == 16) {
+										System.out.println("Die Hexadezimalzahl " + hexZahl + " ist " + hexZahl + " im Hexadezimalsystem.");
+									} 
+									break;
+							}
+							break;
+						case -1:
+							System.out.println("Programm wird beendet.");
+							menu = false;
+							break;
+						default:
+							System.out.println("Dies ist kein unterstütztes Zahlensystem.");	
+					}
+					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 					break;
 				case -1:
-					System.out.println("Bist du dir sicher? Gib erneut -1 ein um das Programm wirklich zu beenden.");
-					break;
-				default:
-					System.out.println("Dies ist kein unterstütztes Zahlensystem.");	
-			}
-			int ziel = sc.nextInt();
-			switch (ziel) {
-				case 2:
-				case 10:
-				case 16:
-					break;
-				case -1:
-					System.out.println("Programm wird beendet.");
 					menu = false;
+					System.out.println("Programm wird heruntergefahren.");
 					break;
 				default:
 					System.out.println("Dies ist kein unterstütztes Zahlensystem.");	
 			}
-			if (ausgang == 2) {
-				System.out.println("Bitte gib die zu umwandelnde Zahl ein.");
-				int zahl = sc.nextInt();
-				System.out.println("~~~~~~~~~~~~~~~~~~~~RESULTAT~~~~~~~~~~~~~~~~~~~~");
-				if (ziel == 2) {
-					System.out.println("Die Binärzahl " + zahl + " ist " + zahl + " im Binärsystem.");
-				} else if (ziel == 10) {
-					System.out.println("Die Binärzahl " + zahl + " ist " + binToDez(zahl) + " im Dezimalsystem.");
-				} else if (ziel == 16) {
-					System.out.println("Die Binärzahl " + zahl + " ist " + binToHex(zahl) + " im Hexadezimalsystem.");
-				}
-			} else if (ausgang == 10) {
-				System.out.println("Bitte gib die zu umwandelnde Zahl ein.");
-				int zahl = sc.nextInt();
-				System.out.println("~~~~~~~~~~~~~~~~~~~~RESULTAT~~~~~~~~~~~~~~~~~~~~");
-				if (ziel == 2) {
-					System.out.println("Die Dezimalzahl " + zahl + " ist " + dezToBin(zahl) + " im Binärsystem.");
-				} else if (ziel == 10) {
-					System.out.println("Die Dezimalzahl " + zahl + " ist " + zahl + " im Dezimalsystem.");
-				} else if (ziel == 16) {
-					System.out.println("Die Dezimalzahl " + zahl + " ist " + dezToHex(zahl) + " im Hexadezimalsystem.");
-				}
-			} else if (ausgang == 16) {
-				System.out.println("Bitte gib die zu umwandelnde Zahl ein.");
-				String zahl = sc.next();
-				System.out.println("~~~~~~~~~~~~~~~~~~~~RESULTAT~~~~~~~~~~~~~~~~~~~~");
-				if (ziel == 2) {
-					System.out.println("Die Hexadezimalzahl " + zahl + " ist " + hexToBin(zahl) + " im Binärsystem.");
-				} else if (ziel == 10) {
-					System.out.println("Die Hexadezimalzahl " + zahl + " ist " + hexToDez(zahl) + " im Dezimalsystem.");
-				} else if (ziel == 16) {
-					System.out.println("Die Hexadezimalzahl " + zahl + " ist " + zahl + " im Hexadezimalsystem.");
-				} 
-			}
-			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		}
 		sc.close();
 	}
-
 }

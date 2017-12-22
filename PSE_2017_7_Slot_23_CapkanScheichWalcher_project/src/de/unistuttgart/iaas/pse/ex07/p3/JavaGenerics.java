@@ -5,6 +5,9 @@ import java.util.List;
 
 /**
  * Provides simple sorting capabilities using generics.
+ * @author Daniel Capkan, Matrikelnummer: 3325960, st156303@stud.uni-stuttgart.de
+ * @author Mario Scheich, Matrikelnummer: 3232655 , st151491@stud.uni-stuttgart.de
+ * @author Florian Walcher, Matrikelnummer: 3320185, st156818@stud.uni-stuttgart.de
  */
 public class JavaGenerics {
 
@@ -16,8 +19,22 @@ public class JavaGenerics {
 	 * @return elements of input list, sorted in ascending order
 	 */
 	public static <T extends Comparable<T>> List<T> sort(List<T> list) {
-		// TODO Übungsblatt 7, Aufgabe 3a
-		return null;
+		ArrayList<T> liste = new ArrayList<T>();
+		for(int i = 0; i < list.size(); i++) {
+			if(liste.size() == 0) {
+				liste.add(0, list.get(i));
+			} else {
+				int j = liste.size() - 1;
+				while(j >= 0 && liste.get(j).compareTo(list.get(i)) > 0) {
+					j--;
+				}
+				if(j < -1) {
+					j = 0;
+				}
+				liste.add(j + 1, list.get(i));
+			}
+		}
+		return liste;
 	}
 
 	public static void main(String[] args) {
