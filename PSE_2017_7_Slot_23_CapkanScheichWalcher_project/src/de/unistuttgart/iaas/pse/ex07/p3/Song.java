@@ -40,10 +40,5 @@ public class Song implements Comparable<Song> {
 			}
 		}
 	}
-    public static void main(String[] args) {
-		Song asdf = new Song("sodfno", "oweifon", 12413);
-		Song erwer = new Song("sodfno", "oweifon", 2);
-		System.out.println(asdf.compareTo(erwer));
-	}
 	
 }

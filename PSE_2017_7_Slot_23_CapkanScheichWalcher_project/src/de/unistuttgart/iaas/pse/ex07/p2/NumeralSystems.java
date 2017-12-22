@@ -137,14 +137,20 @@ public class NumeralSystems {
 				case 10:
 				case 16:
 					System.out.println("Bitte gib die Basis des Zielzahlensystems an. Gib -1 ein um das Programm zu beenden.");
-					int ziel = sc.nextInt();
+					int ziel;
+					try {
+						ziel = sc.nextInt();
+					} catch (InputMismatchException e) {
+						System.out.println("Dies ist keine Zahl.");
+						ziel = -1;
+					}
 					switch (ziel) {
 						case 2:
 						case 10:
 						case 16:
 							switch (ausgang) {
 								case 2:
-									System.out.println("Bitte gib die zu umwandelnde Zahl ein.");
+									System.out.println("Bitte gib die umzuwandelnde Zahl ein.");
 									int binZahl = sc.nextInt();
 									System.out.println("~~~~~~~~~~~~~~~~~~~~RESULTAT~~~~~~~~~~~~~~~~~~~~");
 									if (ziel == 2) {
@@ -154,9 +160,10 @@ public class NumeralSystems {
 									} else if (ziel == 16) {
 										System.out.println("Die Binärzahl " + binZahl + " ist " + binToHex(binZahl) + " im Hexadezimalsystem.");
 									}
+									System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 									break;
 								case 10:
-									System.out.println("Bitte gib die zu umwandelnde Zahl ein.");
+									System.out.println("Bitte gib die umzuwandelnde Zahl ein.");
 									int dezZahl = sc.nextInt();
 									System.out.println("~~~~~~~~~~~~~~~~~~~~RESULTAT~~~~~~~~~~~~~~~~~~~~");
 									if (ziel == 2) {
@@ -166,9 +173,10 @@ public class NumeralSystems {
 									} else if (ziel == 16) {
 										System.out.println("Die Dezimalzahl " + dezZahl + " ist " + dezToHex(dezZahl) + " im Hexadezimalsystem.");
 									}
+									System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 									break;
 								case 16:
-									System.out.println("Bitte gib die zu umwandelnde Zahl ein.");
+									System.out.println("Bitte gib die umzuwandelnde Zahl ein.");
 									String hexZahl = sc.next();
 									System.out.println("~~~~~~~~~~~~~~~~~~~~RESULTAT~~~~~~~~~~~~~~~~~~~~");
 									if (ziel == 2) {
@@ -178,6 +186,7 @@ public class NumeralSystems {
 									} else if (ziel == 16) {
 										System.out.println("Die Hexadezimalzahl " + hexZahl + " ist " + hexZahl + " im Hexadezimalsystem.");
 									} 
+									System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 									break;
 							}
 							break;
@@ -188,11 +197,10 @@ public class NumeralSystems {
 						default:
 							System.out.println("Dies ist kein unterstütztes Zahlensystem.");	
 					}
-					System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 					break;
 				case -1:
 					menu = false;
-					System.out.println("Programm wird heruntergefahren.");
+					System.out.println("Programm wird beendet.");
 					break;
 				default:
 					System.out.println("Dies ist kein unterstütztes Zahlensystem.");	
