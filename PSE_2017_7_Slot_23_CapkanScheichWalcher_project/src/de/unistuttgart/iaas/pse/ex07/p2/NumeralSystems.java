@@ -10,10 +10,11 @@ import java.util.Scanner;
 public class NumeralSystems {
 	public static int dezToBin (int z) {
 		int result = 0;
-		int x = z;
-		for(int i = 0; i <= (int)Math.sqrt(z); i++) {
-			result += Math.pow(10, i) * (x % 2);
-			x /= 2;
+		int i = 0;
+		while (z != 0) {
+			result += Math.pow(10, i) * (z % 2);
+			z /= 2;
+			i++;
 		}
 		return result;
 	}
@@ -37,7 +38,7 @@ public class NumeralSystems {
 				return x;
 			}
 		} else {
-			return (dezToHex(z/16)) + (dezToHex(z%16));
+			return (dezToHex(z / 16)) + (dezToHex(z % 16));
 		}
 	}
 	public static String binToHex (int z) {
@@ -57,15 +58,96 @@ public class NumeralSystems {
 		return dezToBin(hexToDez(z));
 	}
 	public static int hexToDez (String z) {
-		return 0;
+		if (z.length() == 1) {
+			switch (z) {
+			case "A":
+				return 10;
+			case "B":
+				return 11;
+			case "C":
+				return 12;
+			case "D":
+				return 13;
+			case "E":
+				return 14;
+			case "F":
+				return 15;
+			default:
+				return Integer.getInteger(z);
+			}
+		} else {
+			StringBuilder zahl = new StringBuilder(z);
+			String letzteZiffer = zahl.substring(zahl.length() - 1);
+			zahl = zahl.deleteCharAt(zahl.length() - 1);
+			return hexToDez(zahl.toString()) * 16 + hexToDez(letzteZiffer);
+		}
 	}
 	public static void main(String[] args) {
 		boolean menu = true;
 		Scanner sc = new Scanner(System.in);
 		while (menu) {
-			System.out.println("Bitte geben sie die Basis des gewünschten Zahlensystems an.");
-			int i = sc.nextInt();
-			
+			System.out.println("Bitte gib die Basis des Ausgangszahlensystems an. Gib -1 ein um das Programm zu beenden.");
+			int ausgang = sc.nextInt();
+			switch (ausgang) {
+				case 2:
+				case 10:
+				case 16:
+					System.out.println("Bitte gib die Basis des Zielzahlensystems an. Gib -1 ein um das Programm zu beenden.");
+					break;
+				case -1:
+					System.out.println("Bist du dir sicher? Gib erneut -1 ein um das Programm wirklich zu beenden.");
+					break;
+				default:
+					System.out.println("Dies ist kein unterstütztes Zahlensystem.");	
+			}
+			int ziel = sc.nextInt();
+			switch (ziel) {
+				case 2:
+				case 10:
+				case 16:
+					break;
+				case -1:
+					System.out.println("Programm wird beendet.");
+					menu = false;
+					break;
+				default:
+					System.out.println("Dies ist kein unterstütztes Zahlensystem.");	
+			}
+			if (ausgang == 2) {
+				System.out.println("Bitte gib die zu umwandelnde Zahl ein.");
+				int zahl = sc.nextInt();
+				System.out.println("~~~~~~~~~~~~~~~~~~~~RESULTAT~~~~~~~~~~~~~~~~~~~~");
+				if (ziel == 2) {
+					System.out.println("Die Binärzahl " + zahl + " ist " + zahl + " im Binärsystem.");
+				} else if (ziel == 10) {
+					System.out.println("Die Binärzahl " + zahl + " ist " + binToDez(zahl) + " im Dezimalsystem.");
+				} else if (ziel == 16) {
+					System.out.println("Die Binärzahl " + zahl + " ist " + binToHex(zahl) + " im Hexadezimalsystem.");
+				}
+			} else if (ausgang == 10) {
+				System.out.println("Bitte gib die zu umwandelnde Zahl ein.");
+				int zahl = sc.nextInt();
+				System.out.println("~~~~~~~~~~~~~~~~~~~~RESULTAT~~~~~~~~~~~~~~~~~~~~");
+				if (ziel == 2) {
+					System.out.println("Die Dezimalzahl " + zahl + " ist " + dezToBin(zahl) + " im Binärsystem.");
+				} else if (ziel == 10) {
+					System.out.println("Die Dezimalzahl " + zahl + " ist " + zahl + " im Dezimalsystem.");
+				} else if (ziel == 16) {
+					System.out.println("Die Dezimalzahl " + zahl + " ist " + dezToHex(zahl) + " im Hexadezimalsystem.");
+				}
+			} else if (ausgang == 16) {
+				System.out.println("Bitte gib die zu umwandelnde Zahl ein.");
+				String zahl = sc.next();
+				System.out.println("~~~~~~~~~~~~~~~~~~~~RESULTAT~~~~~~~~~~~~~~~~~~~~");
+				if (ziel == 2) {
+					System.out.println("Die Hexadezimalzahl " + zahl + " ist " + hexToBin(zahl) + " im Binärsystem.");
+				} else if (ziel == 10) {
+					System.out.println("Die Hexadezimalzahl " + zahl + " ist " + hexToDez(zahl) + " im Dezimalsystem.");
+				} else if (ziel == 16) {
+					System.out.println("Die Hexadezimalzahl " + zahl + " ist " + zahl + " im Hexadezimalsystem.");
+				} 
+			}
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		}
 		sc.close();
 	}
