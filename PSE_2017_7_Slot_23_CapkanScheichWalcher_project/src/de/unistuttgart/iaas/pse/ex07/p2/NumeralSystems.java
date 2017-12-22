@@ -18,7 +18,7 @@ public class NumeralSystems {
 	 * @return z im Binärystem
 	 */
 	public static long dezToBin (long z) {
-		int result = 0, i = 0;
+		long result = 0, i = 0;
 		while (z != 0) {
 			result += Math.pow(10, i) * (z % 2);
 			z /= 2;
@@ -60,8 +60,9 @@ public class NumeralSystems {
 	 * Wandelt eine Binärzahl in eine Hexadezimalzahl um.
 	 * @param z - die umzurechnende Binärzahl
 	 * @return z im Hexadezimalsystem
+	 * @throws Exception Wenn es keine Binärzahl ist.
 	 */
-	public static String binToHex (long z) {
+	public static String binToHex (long z) throws Exception {
 		return dezToHex(binToDez(z));
 	}
 
@@ -69,11 +70,15 @@ public class NumeralSystems {
 	 * Wandelt eine Binärzahl in eine Dezimalzahl um.
 	 * @param z - die umzurechnende Binärzahl
 	 * @return z im Dezimalsystem
+	 * @throws Exception Wenn die Zahl nicht binär ist.
 	 */
-	public static int binToDez (long z) {
+	public static int binToDez (long z) throws Exception {
 		int result = 0;
 		int i = 0;
 		while(z != 0) {
+			if(z % 10 != 0 && z % 10 != 1) {
+				throw new Exception();
+			}
 			result += (z % 10) * (long)Math.pow(2, i);
 			i++;
 			z /= 10;
@@ -152,28 +157,39 @@ public class NumeralSystems {
 								case 2:
 									System.out.println("Bitte gib die umzuwandelnde Zahl ein.");
 									int binZahl = sc.nextInt();
-									System.out.println("~~~~~~~~~~~~~~~~~~~~RESULTAT~~~~~~~~~~~~~~~~~~~~");
-									if (ziel == 2) {
-										System.out.println("Die Binärzahl " + binZahl + " ist " + binZahl + " im Binärsystem.");
-									} else if (ziel == 10) {
-										System.out.println("Die Binärzahl " + binZahl + " ist " + binToDez(binZahl) + " im Dezimalsystem.");
-									} else if (ziel == 16) {
-										System.out.println("Die Binärzahl " + binZahl + " ist " + binToHex(binZahl) + " im Hexadezimalsystem.");
-									}
-									System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+									try {
+										System.out.println("~~~~~~~~~~~~~~~~~~~~RESULTAT~~~~~~~~~~~~~~~~~~~~");
+										if (ziel == 2) {
+											System.out.println("Die Binärzahl " + binZahl + " ist " + dezToBin(binToDez(binZahl)) + " im Binärsystem.");
+										} else if (ziel == 10) {
+											System.out.println("Die Binärzahl " + binZahl + " ist " + binToDez(binZahl) + " im Dezimalsystem.");
+										} else if (ziel == 16) {
+											System.out.println("Die Binärzahl " + binZahl + " ist " + binToHex(binZahl) + " im Hexadezimalsystem.");
+										}
+										System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+										} catch (Exception g) {
+											System.out.println("Das ist keine Binärzahl.\nProgramm wird beendet.");
+											menu = false;
+										}	
 									break;
 								case 10:
 									System.out.println("Bitte gib die umzuwandelnde Zahl ein.");
-									int dezZahl = sc.nextInt();
-									System.out.println("~~~~~~~~~~~~~~~~~~~~RESULTAT~~~~~~~~~~~~~~~~~~~~");
-									if (ziel == 2) {
-										System.out.println("Die Dezimalzahl " + dezZahl + " ist " + dezToBin(dezZahl) + " im Binärsystem.");
-									} else if (ziel == 10) {
-										System.out.println("Die Dezimalzahl " + dezZahl + " ist " + dezZahl + " im Dezimalsystem.");
-									} else if (ziel == 16) {
-										System.out.println("Die Dezimalzahl " + dezZahl + " ist " + dezToHex(dezZahl) + " im Hexadezimalsystem.");
+									int dezZahl;
+									try {
+										dezZahl = sc.nextInt();
+										System.out.println("~~~~~~~~~~~~~~~~~~~~RESULTAT~~~~~~~~~~~~~~~~~~~~");
+										if (ziel == 2) {
+											System.out.println("Die Dezimalzahl " + dezZahl + " ist " + dezToBin(dezZahl) + " im Binärsystem.");
+										} else if (ziel == 10) {
+											System.out.println("Die Dezimalzahl " + dezZahl + " ist " + dezZahl + " im Dezimalsystem.");
+										} else if (ziel == 16) {
+											System.out.println("Die Dezimalzahl " + dezZahl + " ist " + dezToHex(dezZahl) + " im Hexadezimalsystem.");
+										}
+										System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+									} catch (InputMismatchException f) {
+										System.out.println("Dies ist keine Dezimalzahl.\nProgramm wird beendet.");
+										menu = false;
 									}
-									System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 									break;
 								case 16:
 									System.out.println("Bitte gib die umzuwandelnde Zahl ein.");
